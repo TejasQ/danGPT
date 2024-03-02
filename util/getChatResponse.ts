@@ -29,9 +29,9 @@ export const getChatResponse = async (query: string) => {
     console.error(e);
     return {
       result:
-        "Sorry, the whole world is using this and we're being rate limited." +
+        "Sorry, the whole world is using this and we're being rate limited because of heavy load." +
         e.message.split(".")[2] +
-        " seconds or much later.",
+        " seconds or much, much later.",
       sources: [],
     };
   }
