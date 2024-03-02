@@ -14,7 +14,7 @@ export const search = async (query: string) => {
   const [$vector] = await text2vec([query]);
   console.timeLog("search", "Searching...");
   const results = await collection
-    .find({}, { sort: { $vector }, limit: 100 })
+    .find({}, { sort: { $vector }, limit: 50 })
     .toArray();
   console.timeLog("search", "Got results.");
   console.timeEnd("search");
