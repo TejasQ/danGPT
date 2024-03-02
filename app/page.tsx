@@ -79,6 +79,25 @@ export default async function Home({
           </ul>
         </>
       )}
+      <div className="text-xs">
+        Even with RAG, this still may be inaccurate.{" "}
+        <a
+          className="underline underline-offset-2"
+          target="_blank"
+          href="https://x.com/dan_abramov2"
+        >
+          Real Dan
+        </a>{" "}
+        is always the truest source of information. Built as a side hobby
+        project by{" "}
+        <a
+          className="underline underline-offset-2"
+          href="https://x.com/tejaskumar_"
+        >
+          Tejas
+        </a>
+        .
+      </div>
     </main>
   );
 }
