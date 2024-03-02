@@ -1,6 +1,6 @@
 # danGPT
 
-![OG Image](public/og.jpg);
+![OG Image](public/og.jpg)
 
 > Try it out at [https://dangpt.vercel.app/](https://dangpt.vercel.app).
 
