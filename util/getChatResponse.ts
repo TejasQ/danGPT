@@ -8,19 +8,31 @@ export const getChatResponse = async (query: string) => {
 
   console.time("chatgpt");
   console.timeLog("chatgpt", "Asking GPT-3.5...");
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    stream: false,
-    messages: await getMessages(
-      results.map((r) => r.text),
-      query
-    ),
-  });
-  console.timeLog("chatgpt", "Got response.");
-  console.timeEnd("chatgpt");
 
-  return {
-    result: response.choices[0].message.content,
-    sources: results,
-  };
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      stream: false,
+      messages: await getMessages(
+        results.map((r) => r.text),
+        query
+      ),
+    });
+    console.timeLog("chatgpt", "Got response.");
+    console.timeEnd("chatgpt");
+
+    return {
+      result: response.choices[0].message.content,
+      sources: results,
+    };
+  } catch (e: any) {
+    console.error(e);
+    return {
+      result:
+        "Sorry, the whole world is using this and we're being rate limited." +
+        e.message.split(".")[2] +
+        " seconds or much later.",
+      sources: [],
+    };
+  }
 };
