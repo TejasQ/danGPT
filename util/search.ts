@@ -13,10 +13,12 @@ export const search = async (query: string) => {
   console.timeLog("search", "Vectorizing query", query, "...");
   const [$vector] = await text2vec([query]);
   console.timeLog("search", "Searching...");
-  const results = await collection
-    .find({}, { sort: { $vector }, limit: 50 })
-    .toArray();
-  console.timeLog("search", "Got results.");
+  const results = (
+    await collection
+      .find({}, { sort: { $vector }, limit: 100, includeSimilarity: true })
+      .toArray()
+  ).filter((r) => r.$similarity > 0.7);
+  console.timeLog("search", "Got results.", results);
   console.timeEnd("search");
   return results;
 };
