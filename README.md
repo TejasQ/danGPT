@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# danGPT
 
-## Getting Started
+![OG Image](public/og.jpg);
 
-First, run the development server:
+> Try it out at [https://dangpt.vercel.app/](https://dangpt.vercel.app).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This project showcases how to compose AI services and implement RAG (Retrieval Augmented Generation) with Generative AI.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Here's a breakdown of how it works:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Outside of the scope of this repo, we have scraped a huge amount of data. In this case, [Dan](https://x.com/dan_abramov2)'s posts.
+2. We then turn all the text we'd like to search into vectors (lists of numbers) using a machine learning model that maps meaning in text to a multidimensional numerical space. "Embedding" the text in vector space using an ["embeddings model"](https://platform.openai.com/docs/models/embeddings). In this case, OpenAI's `text-embedding-3-small`.
+3. We then store those vectors in a vector database. Our weapon of choice here is [AstraDB](https://astra.datastax.com/) from [DataStax](https://datastax.com/).
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Then, when a user submits a query, we:
 
-## Learn More
+1. Turn the query into a vector using the same embeddings model.
+2. Search the vector database for the most similar vectors to the query vector, or vectors "near" the query vector in dimensional space.
+3. Retrieve many original texts from the most similar vectors.
+4. Take those original texts and feed them as context into a generative AI model. In this case, OpenAI's `gpt-3.5-turbo`. The same model behind ChatGPT's free tier.
+5. The generative AI model then generates a response based on the context it was given, prentending to be Dan.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+It's worth noting that this is just a silly side project demo and is likely to be wrong. It's more for education than anything else.
