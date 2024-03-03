@@ -11,6 +11,8 @@ type Source = {
   text: string;
 };
 
+export const maxDuration = 300;
+
 export default async function Home({
   searchParams,
 }: {
