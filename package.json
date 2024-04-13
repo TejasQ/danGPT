@@ -1,0 +1,33 @@
+{
+  "name": "ui-astro",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.5.10",
+    "@astrojs/react": "^3.3.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/vercel": "^7.5.3",
+    "@datastax/astra-db-ts": "^1.0.0",
+    "@types/react": "^18.2.77",
+    "@types/react-dom": "^18.2.25",
+    "astro": "^4.6.1",
+    "dotenv": "^16.4.5",
+    "openai": "^4.33.1",
+    "openai-chat-tokens": "^0.2.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  }
+}

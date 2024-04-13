@@ -1,0 +1,65 @@
+---
+import type { ChatCompletion } from "openai/resources";
+import { getChatResponse } from "../../util/getChatResponse";
+import { App } from "../components/App";
+
+const q = new URLSearchParams(Astro.request.url.split("?")[1]).get("q");
+let answer = {
+  response: {
+    choices: [] as ChatCompletion["choices"],
+  },
+  sources: [] as any[],
+};
+
+if (q) {
+  answer = await getChatResponse(q, false);
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <main
+      class="flex min-h-screen max-w-screen-lg w-full mx-auto flex-col items-center justify-center gap-8 p-8"
+    >
+      <img
+        alt="DanGPT"
+        src="/dangpt.jpeg"
+        width="200"
+        height="200"
+        class="rounded-full"
+      />
+      <App
+        initialAnswer={answer.response.choices[0]?.message.content ?? ""}
+        initialSources={answer.sources}
+        initialQuery={q ?? ""}
+        client:visible
+      />
+      <div class="text-xs">
+        Even with RAG, this still may be inaccurate.{" "}
+        <a
+          class="underline underline-offset-2"
+          target="_blank"
+          href="https://x.com/dan_abramov2"
+        >
+          Real Dan
+        </a>{" "}
+        is always the truest source of information. Built as a side hobby project
+        by{" "}
+        <a
+          class="underline underline-offset-2"
+          href="https://x.com/tejaskumar_"
+        >
+          Tejas
+        </a>
+        .
+      </div>
+    </main>
+  </body>
+</html>
