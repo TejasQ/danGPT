@@ -2,20 +2,20 @@ import OpenAI from "openai";
 import { search } from "./search";
 import { getMessages } from "./getMessages";
 import type { Stream } from "openai/streaming.mjs";
-import type { FoundDoc, SomeDoc } from "@datastax/astra-db-ts";
 import type {
   ChatCompletion,
   ChatCompletionChunk,
 } from "openai/resources/index.mjs";
+import type { Source } from "./types";
 
 type GetChatResponse = {
   response: Stream<ChatCompletionChunk> | ChatCompletion;
-  sources: FoundDoc<SomeDoc>[];
+  sources: Source[];
 };
 
 export const getChatResponse = async <T extends boolean>(
   query: string,
-  stream?: T
+  stream: T
 ): Promise<GetChatResponse> => {
   const results = await search(query);
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -36,12 +36,14 @@ export const getChatResponse = async <T extends boolean>(
     console.timeEnd("chatgpt");
 
     return {
-      response: stream
-        ? (response as Stream<OpenAI.Chat.Completions.ChatCompletionChunk>)
-        : (response as OpenAI.Chat.Completions.ChatCompletion),
+      response,
       sources: results.map((r) => {
         const { $vector, ...rest } = r;
-        return rest;
+
+        /**
+         * @todo fix this with DataStax
+         */
+        return rest as unknown as Source;
       }),
     };
   } catch (e: any) {
@@ -63,7 +65,7 @@ export const getChatResponse = async <T extends boolean>(
           },
         ],
       } as OpenAI.Chat.Completions.ChatCompletion,
-      sources: [],
+      sources: [] as Source[],
     };
   }
 };

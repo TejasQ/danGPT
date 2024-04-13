@@ -1,17 +1,27 @@
 ---
+// @ts-ignore
 import type { ChatCompletion } from "openai/resources";
+import type { Source } from "../../util/types";
 import { getChatResponse } from "../../util/getChatResponse";
 import { App } from "../components/App";
 
 const q = new URLSearchParams(Astro.request.url.split("?")[1]).get("q");
 let answer = {
   response: {
-    choices: [] as ChatCompletion["choices"],
-  },
-  sources: [] as any[],
+    choices: [],
+    id: "",
+    created: 0,
+    model: "",
+    object: "chat.completion",
+  } as ChatCompletion,
+  sources: [] as Source[],
 };
 
-if (q) {
+const isNotStream = (maybeAnswer: any): maybeAnswer is ChatCompletion => {
+  return maybeAnswer.hasOwnProperty("choices");
+};
+
+if (q && isNotStream(answer)) {
   answer = await getChatResponse(q, false);
 }
 ---
