@@ -1,1 +1,1 @@
-export const collectionName = "danGPT";
+export const collectionName = "dangpt2";
