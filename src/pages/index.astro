@@ -18,7 +18,7 @@ let answer = {
 };
 
 const isNotStream = (maybeAnswer: any): maybeAnswer is ChatCompletion => {
-  return maybeAnswer.hasOwnProperty("choices");
+  return maybeAnswer.response.hasOwnProperty("choices");
 };
 
 if (q && isNotStream(answer)) {
@@ -29,10 +29,22 @@ if (q && isNotStream(answer)) {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    {
+      q ? (
+        <title>Ask Dan Abramov: {q} | danGPT</title>
+      ) : (
+        <title>danGPT | Dan Abramov as an AI</title>
+      )
+    }
+    <style is:global>
+      a {
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+    </style>
   </head>
   <body>
     <main
@@ -71,5 +83,16 @@ if (q && isNotStream(answer)) {
         .
       </div>
     </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Select all anchor tags in the document
+        var links = document.querySelectorAll("a");
+
+        // Set the target attribute of each link to '_blank'
+        links.forEach(function (link) {
+          link.target = "_blank";
+        });
+      });
+    </script>
   </body>
 </html>

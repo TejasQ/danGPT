@@ -24,7 +24,11 @@ export const Form = ({ query, onUpdate }: Props) => {
           alert("Ask something.");
           return;
         }
-
+        window.history.replaceState(
+          {},
+          "",
+          "/?q=" + encodeURIComponent(inputRef.current.value)
+        );
         onUpdate.setAnswer("");
         const eventSource = new EventSource(
           "/api/ask?q=" + encodeURIComponent(inputRef.current.value)

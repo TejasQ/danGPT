@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Source } from "../../util/types";
+import { replaceTwitterHandles } from "../../util/replaceTwitterHandles";
 import { Form } from "./Form";
 import ReactMarkdown from "react-markdown";
 
@@ -29,31 +30,33 @@ export function App({ initialQuery, initialAnswer, initialSources }: AppProps) {
                 <div className="break-inside-avoid-column border mb-4 grid gap-4 border-neutral-400 rounded-lg p-4">
                   <div className="flex items-center gap-4">
                     <img
-                      alt={`${source.name}'s avatar`}
-                      src={source.avatarUrl}
+                      alt={`${source.authorName}'s avatar`}
+                      src={source.authorAvatarUrl}
                       width="48"
                       height="48"
                       className="rounded-full"
                     />
                     <div className="flex flex-col gap-0 leading-none">
-                      <span className="font-bold">{source.name}</span>
+                      <span className="font-bold">{source.authorName}</span>
                       <span className="text-neutral-500 text-sm">
-                        @{source.handle}
+                        @{source.authorHandle}
                       </span>
                     </div>
                   </div>
                   <div>
-                    <ReactMarkdown>{source.text}</ReactMarkdown>
+                    <ReactMarkdown>
+                      {replaceTwitterHandles(source.text)}
+                    </ReactMarkdown>
                   </div>
                   <div className="flex items-center text-sm justify-between">
                     <span>
                       {Intl.DateTimeFormat("en-US").format(
-                        new Date(source.datetime)
+                        new Date(source.datetime * 1000)
                       )}
                     </span>
                     <a
                       target="_blank"
-                      href={`https://x.com/${source.handle}/status/${source.id}`}
+                      href={`https://x.com/${source.authorHandle}/status/${source.id}`}
                       className="shrink-0"
                     >
                       Read on 𝕏 &rarr;

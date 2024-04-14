@@ -35,7 +35,7 @@ export const search = async (query: string) => {
         { sort: { $vector: $vector! }, limit: 10, includeSimilarity: true }
       )
       .toArray()
-  ).filter((r) => r.$similarity > 0.7);
+  ).filter((r) => r.$similarity > 0.76);
   console.timeLog("search", "Got results.");
   console.timeEnd("search");
   return results;

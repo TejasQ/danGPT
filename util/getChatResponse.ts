@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import OpenAI from "openpipe/openai";
 import { search } from "./search";
 import { getMessages } from "./getMessages";
 import type { Stream } from "openai/streaming.mjs";
@@ -24,13 +24,16 @@ export const getChatResponse = async <T extends boolean>(
   console.timeLog("chatgpt", "Asking GPT-3.5...");
 
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+    const response: any = await openai.chat.completions.create({
+      model: "gpt-4-turbo-preview",
       stream: Boolean(stream),
       messages: await getMessages(
         results.map((r) => r.text),
         query
       ),
+      openpipe: {
+        logRequest: true,
+      },
     });
     console.timeLog("chatgpt", "Got response.");
     console.timeEnd("chatgpt");
@@ -64,7 +67,7 @@ export const getChatResponse = async <T extends boolean>(
             },
           },
         ],
-      } as OpenAI.Chat.Completions.ChatCompletion,
+      } as ChatCompletion,
       sources: [] as Source[],
     };
   }
